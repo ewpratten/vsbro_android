@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
@@ -39,7 +40,7 @@ void authenticate(
     var plist = response.body.split(".");
     var authType = json.decode(utf8.decode(base64.decode(plist[0])));
     var expiry = json.decode(utf8.decode(base64.decode(plist[1])));
-    String token = plist[2];
+    String token = response.body;
 
     print(expiry);
 
@@ -58,13 +59,38 @@ void authenticate(
 
 void getFriendPage(
     ValueChanged<List<dynamic>> callback, int page_number) async {
-  // Make API call
-//   var response = await http.get(feed_route_base + '?page=${page_number}');
+  // Get token
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var token = prefs.getString("token");
+  if (token == null) {
+    token = "";
+  }
+  print(token);
 
-//   // If the api call worked, make a callback call
-//   if (response.statusCode == 200) {
-//     callback(json.decode(response.body));
-//   }
+  // Make API call
+  var response = await http.get(
+      "https://api.vsbro.co/api/friend_feed" + '?page=${page_number}',
+      headers: {HttpHeaders.authorizationHeader: "bearer ${token}"});
+
+  // If the api call worked, make a callback call
+  if (response.statusCode == 200) {
+    callback(json.decode(response.body));
+  }
 }
 
 void becomeFriendWith(num userID) {}
+
+void authUpvotePost(num postID) async {
+  // Get token
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var token = prefs.getString("token");
+  if (token == null) {
+    token = "";
+  }
+  print(token);
+
+  // Make API call
+  var response = await http.get(
+      "https://api.vsbro.co/api/posts/upvote/${postID}",
+      headers: {HttpHeaders.authorizationHeader: "bearer ${token}"});
+}

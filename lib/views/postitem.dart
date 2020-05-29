@@ -32,22 +32,28 @@ class _PostItemState extends State<PostItem> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              trailing: IconButton(
-                  icon: Icon(Icons.thumb_up),
-                  onPressed: () {
-                    // If we have auth, make an upvote call
+              trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                IconButton(
+                    icon: Icon(Icons.thumb_up),
+                    onPressed: () {
+                      // If we have auth, make an upvote call
 
-                    isUserAuthenticated((t) {
-                      if (t) {
-                        widget.post.upvote();
-                      } else {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (coontext) => AuthView()));
-                      }
-                    });
-                  }),
+                      isUserAuthenticated((t) {
+                        if (t) {
+                          widget.post.upvote();
+                          setState(() {
+                            widget.post.score++;
+                          });
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (coontext) => AuthView()));
+                        }
+                      });
+                    }),
+                Text("${widget.post.score}")
+              ]),
             ),
             new Align(
               alignment: Alignment.center,

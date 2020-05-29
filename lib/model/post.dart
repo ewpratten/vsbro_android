@@ -11,6 +11,7 @@ class Post {
   num postID;
   String caption;
   String profilePicURL;
+  num score;
 
   Post(Map<String, dynamic> json) {
     this.pictureURL = json["Picture"];
@@ -21,7 +22,10 @@ class Post {
     this.profilePicURL =
         "https://d8xay7agdbr1p.cloudfront.net/users/${userID}/" +
             json["User"]["picture"];
+    this.score = json["score"];
   }
 
-  void upvote() {}
+  void upvote() {
+    authUpvotePost(this.postID);
+  }
 }
