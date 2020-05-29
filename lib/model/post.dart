@@ -40,19 +40,22 @@ class Post {
                     style: TextStyle(fontSize: 25),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.plus_one),
-                  onPressed: () {
-                    if (isUserAuthenticated()) {
-                      upvotePost(this.postID);
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AuthView()),
-                      );
-                    }
-                  },
-                )
+                CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Color(0xff94d500),
+                    child: IconButton(
+                      icon: Icon(Icons.plus_one),
+                      onPressed: () {
+                        if (isUserAuthenticated()) {
+                          upvotePost(this.postID);
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AuthView()),
+                          );
+                        }
+                      },
+                    ))
               ],
             )
           ],
