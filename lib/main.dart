@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vsbro/views/friends.dart';
 import 'package:vsbro/views/home.dart';
 
 void main() {
@@ -27,7 +28,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   PageController _pageController;
-  int _page = 2;
+  int _page = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +38,8 @@ class _MainScreenState extends State<MainScreen> {
         controller: _pageController,
         onPageChanged: onPageChanged,
         children: <Widget>[
-          // Chats(),
-          // Friends(),
           Home(),
-          // Notifications(),
+          Friends(),
           // Profile(),
         ],
       ),
@@ -66,7 +65,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.search,
+                Icons.group,
               ),
               title: Container(height: 0.0),
             ),
@@ -91,7 +90,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: 2);
+    _pageController = PageController(initialPage: 0);
   }
 
   @override

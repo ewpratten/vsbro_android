@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'dart:html' as html;
+import 'package:url_launcher/url_launcher.dart';
+import 'package:vsbro/api/auth.dart';
 
 class AuthView extends StatefulWidget {
   AuthView({Key key}) : super(key: key);
@@ -26,12 +27,21 @@ class _AuthViewState extends State<AuthView> {
     var email = emailController.text;
     var password = passwordController.text;
 
-    var success = false;
+    authenticate((success) {
+      if (success) {
+        Navigator.pop(context);
+      } else {
+        emailController.text = "Invalid Login. Try again";
+      }
+    }, email, password);
+  }
 
-    if (success) {
-      Navigator.pop(context);
+  launchRegisterURL() async {
+    const url = "https://vsbro.co/register";
+    if (await canLaunch(url)) {
+      await launch(url);
     } else {
-      emailController.text = "Invalid Login. Try again";
+      throw 'Could not launch $url';
     }
   }
 
@@ -65,12 +75,7 @@ class _AuthViewState extends State<AuthView> {
                 this.tryLogin(context);
               },
             ),
-            RaisedButton(
-              child: Text("Sign Up"),
-              onPressed: () {
-                // html.window.open("https://vsbro.co/register", "VSBRO register");
-              },
-            ),
+            RaisedButton(child: Text("Sign Up"), onPressed: launchRegisterURL),
           ],
         ));
   }

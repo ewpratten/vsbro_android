@@ -36,12 +36,17 @@ class _PostItemState extends State<PostItem> {
                   icon: Icon(Icons.thumb_up),
                   onPressed: () {
                     // If we have auth, make an upvote call
-                    if (isUserAuthenticated()) {
-                      widget.post.upvote();
-                    } else {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (coontext) => AuthView()));
-                    }
+
+                    isUserAuthenticated((t) {
+                      if (t) {
+                        widget.post.upvote();
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (coontext) => AuthView()));
+                      }
+                    });
                   }),
             ),
             new Align(
