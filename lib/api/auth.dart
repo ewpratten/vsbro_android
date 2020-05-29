@@ -174,3 +174,49 @@ num getMyID() {
 // POST https://api.vsbro.co/api/posts/get_post_url {"caption":"text"}
 // PUT https://vsbro-photos-prod.s3.amazonaws.com/users/116855/BToGVohzyUdTcuuinTQmQISBvFETyNPo.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXQCTSMQQGFIGPC6N%2F20200529%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200529T155354Z&X-Amz-Expires=900&X-Amz-SignedHeaders=content-type%3Bhost&X-Amz-Signature=5770951faff8d3440044c20d345cfbfc25700feccbba9276fbff4b5ceaacc8c6
 // POST https://api.vsbro.co/api/posts/submit {"caption":"text","filename":"url from past 2 requests"}
+
+void uploadPost(ValueChanged<bool> callback, File f, String caption) async {
+  // Get token
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var token = prefs.getString("token");
+  if (token == null) {
+    token = "";
+  }
+  print(token);
+
+  // Post the caption
+  var response = await http.post("https://api.vsbro.co/api/posts/get_post_url",
+      body: json.encode({"caption": caption}),
+      headers: {HttpHeaders.authorizationHeader: "bearer ${token}"});
+
+  if (response.statusCode != 200) {
+    callback(false);
+    return;
+  }
+
+  // Parse out the response
+  Map<String, dynamic> host = json.decode(response.body);
+
+  // Post the pic
+  var response2 = await http.put(host["signed_url"],
+      headers: {HttpHeaders.contentTypeHeader: "image/jpg"},
+      body: await f.readAsBytes());
+
+  if (response2.statusCode != 200) {
+    print("Failed to upload image");
+    callback(false);
+    return;
+  }
+
+  // Finalize the process
+  var response3 = await http.post("https://api.vsbro.co/api/posts/submit",
+      body: json.encode({"caption": caption, "filename": host["filename"]}),
+      headers: {HttpHeaders.authorizationHeader: "bearer ${token}"});
+
+  if (response3.statusCode != 200) {
+    callback(false);
+    return;
+  }
+
+  callback(true);
+}

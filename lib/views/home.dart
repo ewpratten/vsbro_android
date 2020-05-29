@@ -1,9 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:vsbro/api/auth.dart';
 import 'package:vsbro/api/feed.dart';
 import 'package:vsbro/model/post.dart';
+import 'package:vsbro/views/authview.dart';
 import 'package:vsbro/views/postitem.dart';
+import 'package:vsbro/views/uploadview.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -109,7 +112,19 @@ class _HomeState extends State<Home> {
         child: Icon(
           Icons.add,
         ),
-        onPressed: () {},
+        onPressed: () {
+          isUserAuthenticated((t) {
+            if (t) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (coontext) => UploadView()));
+            } else {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (coontext) => AuthView()));
+            }
+          });
+        },
       ),
     );
   }
