@@ -49,11 +49,14 @@ var pageNum = 0;
       ),
       body: RefreshIndicator(
         onRefresh: () {
-          getFriendPage(this.updateFeed, this.pageNum);
-
           // Dummy code because callbacks FTW
           var c = new Completer();
-          c.complete(1);
+
+          getFriendPage((json) {
+            c.complete(1);
+            this.updateFeed(json);
+          }, this.pageNum);
+
           return c.future;
         },
         child: ListView.builder(

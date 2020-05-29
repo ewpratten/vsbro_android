@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
       title: 'Unofficial VSBRO',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        backgroundColor: Colors.grey,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MainScreen(),

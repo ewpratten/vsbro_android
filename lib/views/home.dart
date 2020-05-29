@@ -69,7 +69,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Feed"),
@@ -77,11 +76,14 @@ class _HomeState extends State<Home> {
       ),
       body: RefreshIndicator(
         onRefresh: () {
-          getFeedPage(this.updateFeed, this.pageNum);
-
           // Dummy code because callbacks FTW
           var c = new Completer();
-          c.complete(1);
+
+          getFeedPage((json) {
+            c.complete(1);
+            this.updateFeed(json);
+          }, this.pageNum);
+
           return c.future;
         },
         child: ListView.builder(
@@ -90,8 +92,7 @@ class _HomeState extends State<Home> {
           itemBuilder: (BuildContext context, int index) {
             if (index < this.posts.length) {
               Post post = this.posts[index];
-              return PostItem(
-                  post:post);
+              return PostItem(post: post);
             } else {
               return RaisedButton(
                 child: Text("More"),
