@@ -5,8 +5,21 @@ import 'package:vsbro/views/friends.dart';
 import 'package:vsbro/views/home.dart';
 import 'package:vsbro/views/userwidget.dart';
 
+import 'package:sentry/sentry.dart';
+
+final SentryClient sentry = new SentryClient(
+    dsn:
+        "https://58cf2e6281354eaaa6b613938bcf406d@o398481.ingest.sentry.io/5258285");
+
 void main() {
-  runApp(MyApp());
+  try {
+    runApp(MyApp());
+  } catch (e, s) {
+    sentry.captureException(
+      exception: e,
+      stackTrace: s,
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {

@@ -75,7 +75,7 @@ void getFriendPage(
 
   // If the api call worked, make a callback call
   if (response.statusCode == 200) {
-    callback(json.decode(response.body));
+    callback(json.decode(utf8.decode(response.bodyBytes)));
   }
 }
 
