@@ -6,6 +6,7 @@ class User {
   String email;
   String bio;
   String profilePicURL;
+  bool isBro;
 
   List<Post> posts = new List();
 
@@ -15,6 +16,7 @@ class User {
     this.email = json["email"];
     this.bio = json["bio"];
     this.profilePicURL = json["picture"];
+    this.isBro = json["is_current_friends_with"];
 
     // Get posts
     for (Map<String, dynamic> post in json["Posts"]) {

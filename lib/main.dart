@@ -3,7 +3,6 @@ import 'package:vsbro/api/auth.dart';
 import 'package:vsbro/views/authview.dart';
 import 'package:vsbro/views/friends.dart';
 import 'package:vsbro/views/home.dart';
-import 'package:vsbro/views/meview.dart';
 import 'package:vsbro/views/userwidget.dart';
 
 void main() {

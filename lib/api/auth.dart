@@ -89,9 +89,11 @@ void becomeFriendWith(num userID) async {
   print(token);
 
   // Make API call
-  var response = await http.get(
+  var response = await http.post(
       "https://api.vsbro.co/api/friendships/create/${userID}",
       headers: {HttpHeaders.authorizationHeader: "bearer ${token}"});
+
+  print(response.statusCode);
 }
 
 void stopBeingFriendWith(num userID) async {
@@ -104,7 +106,7 @@ void stopBeingFriendWith(num userID) async {
   print(token);
 
   // Make API call
-  var response = await http.get(
+  var response = await http.post(
       "https://api.vsbro.co/api/friendships/delete/${userID}",
       headers: {HttpHeaders.authorizationHeader: "bearer ${token}"});
 }
@@ -119,7 +121,7 @@ void authUpvotePost(num postID) async {
   print(token);
 
   // Make API call
-  var response = await http.get(
+  var response = await http.post(
       "https://api.vsbro.co/api/posts/upvote/${postID}",
       headers: {HttpHeaders.authorizationHeader: "bearer ${token}"});
 }
@@ -151,6 +153,17 @@ void preloadMyID() {
   readOwnUserID((value) {
     myID = value;
   });
+}
+
+void asyncPreloadMyID() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var myuser = prefs.getInt("userid");
+
+  if (myuser == null) {
+    myuser = -1;
+  }
+
+  myID = myuser;
 }
 
 num getMyID() {

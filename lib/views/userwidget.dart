@@ -10,7 +10,6 @@ import 'package:vsbro/views/postitem.dart';
 class UserWidget extends StatefulWidget {
   final num userID;
   User user;
-  bool isBro = false;
   bool isMe = false;
 
   final String title = "Profile";
@@ -49,6 +48,19 @@ class _UserWidgetState extends State<UserWidget> {
     } else {
       throw 'Could not launch $url';
     }
+  }
+
+  _toggleBroStatus() {
+    setState(() {
+      print(widget.user.isBro);
+      if (widget.user.isBro) {
+        stopBeingFriendWith(widget.userID);
+        widget.user.isBro = false;
+      } else {
+        becomeFriendWith(widget.userID);
+        widget.user.isBro = true;
+      }
+    });
   }
 
   @override
@@ -100,7 +112,7 @@ class _UserWidgetState extends State<UserWidget> {
                       child: Icon(
                         (widget.isMe)
                             ? Icons.edit
-                            : ((widget.isBro) ? Icons.remove : Icons.add),
+                            : ((widget.user.isBro) ? Icons.remove : Icons.add),
                         color: Colors.white,
                       ),
                       color: Theme.of(context).accentColor,
@@ -110,11 +122,7 @@ class _UserWidgetState extends State<UserWidget> {
                         } else {
                           isUserAuthenticated((t) {
                             if (t) {
-                              if (widget.isBro) {
-                                stopBeingFriendWith(widget.userID);
-                              } else {
-                                becomeFriendWith(widget.userID);
-                              }
+                              _toggleBroStatus();
                             } else {
                               Navigator.push(
                                   context,
@@ -135,7 +143,11 @@ class _UserWidgetState extends State<UserWidget> {
                   itemCount: widget.user.posts.length,
                   itemBuilder: (BuildContext context, int index) {
                     Post post = widget.user.posts[index];
-                    return PostItem(post: post, doNotAllowProfileOpen: true,);
+
+                    return PostItem(
+                      post: post,
+                      doNotAllowProfileOpen: true,
+                    );
                   },
                 ),
               ],
