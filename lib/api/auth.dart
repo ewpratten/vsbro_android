@@ -50,6 +50,7 @@ void authenticate(
     prefs.setBool("authenticated", true);
     prefs.setString("token", token);
     prefs.setInt("expiry", expiry["exp"]);
+    prefs.setInt("userid", int.parse(expiry["sub"]));
 
     callback(true);
   } else {
@@ -78,7 +79,35 @@ void getFriendPage(
   }
 }
 
-void becomeFriendWith(num userID) {}
+void becomeFriendWith(num userID) async {
+  // Get token
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var token = prefs.getString("token");
+  if (token == null) {
+    token = "";
+  }
+  print(token);
+
+  // Make API call
+  var response = await http.get(
+      "https://api.vsbro.co/api/friendships/create/${userID}",
+      headers: {HttpHeaders.authorizationHeader: "bearer ${token}"});
+}
+
+void stopBeingFriendWith(num userID) async {
+  // Get token
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var token = prefs.getString("token");
+  if (token == null) {
+    token = "";
+  }
+  print(token);
+
+  // Make API call
+  var response = await http.get(
+      "https://api.vsbro.co/api/friendships/delete/${userID}",
+      headers: {HttpHeaders.authorizationHeader: "bearer ${token}"});
+}
 
 void authUpvotePost(num postID) async {
   // Get token
@@ -94,3 +123,41 @@ void authUpvotePost(num postID) async {
       "https://api.vsbro.co/api/posts/upvote/${postID}",
       headers: {HttpHeaders.authorizationHeader: "bearer ${token}"});
 }
+
+void checkUserIsMe(ValueChanged<bool> callback, num userID) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var myuser = prefs.getInt("userid");
+
+  if (myuser == null) {
+    myuser = -1;
+  }
+
+  callback(myuser == userID);
+}
+
+void readOwnUserID(ValueChanged<num> callback) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var myuser = prefs.getInt("userid");
+
+  if (myuser == null) {
+    myuser = -1;
+  }
+
+  callback(myuser);
+}
+
+var myID = -1;
+void preloadMyID() {
+  readOwnUserID((value) {
+    myID = value;
+  });
+}
+
+num getMyID() {
+  return myID;
+}
+
+// Posting a photo
+// POST https://api.vsbro.co/api/posts/get_post_url {"caption":"text"}
+// PUT https://vsbro-photos-prod.s3.amazonaws.com/users/116855/BToGVohzyUdTcuuinTQmQISBvFETyNPo.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXQCTSMQQGFIGPC6N%2F20200529%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200529T155354Z&X-Amz-Expires=900&X-Amz-SignedHeaders=content-type%3Bhost&X-Amz-Signature=5770951faff8d3440044c20d345cfbfc25700feccbba9276fbff4b5ceaacc8c6
+// POST https://api.vsbro.co/api/posts/submit {"caption":"text","filename":"url from past 2 requests"}

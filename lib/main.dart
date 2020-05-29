@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:vsbro/api/auth.dart';
+import 'package:vsbro/views/authview.dart';
 import 'package:vsbro/views/friends.dart';
 import 'package:vsbro/views/home.dart';
+import 'package:vsbro/views/meview.dart';
+import 'package:vsbro/views/userwidget.dart';
 
 void main() {
   runApp(MyApp());
@@ -40,7 +44,6 @@ class _MainScreenState extends State<MainScreen> {
         children: <Widget>[
           Home(),
           Friends(),
-          // Profile(),
         ],
       ),
       bottomNavigationBar: Theme(
@@ -84,7 +87,23 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void navigationTapped(int page) {
-    _pageController.jumpToPage(page);
+    if (page < 2) {
+      _pageController.jumpToPage(page);
+    } else {
+      isUserAuthenticated((t) {
+        if (t) {
+          readOwnUserID((uid) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (coontext) => UserWidget(userID: uid)));
+          });
+        } else {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (coontext) => AuthView()));
+        }
+      });
+    }
   }
 
   @override

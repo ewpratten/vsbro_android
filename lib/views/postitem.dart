@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:vsbro/api/auth.dart';
 import 'package:vsbro/model/post.dart';
 import 'package:vsbro/views/authview.dart';
+import 'package:vsbro/views/userwidget.dart';
 
 class PostItem extends StatefulWidget {
   final Post post;
+  bool doNotAllowProfileOpen = false;
 
-  PostItem({Key key, @required this.post}) : super(key: key);
+  PostItem({Key key, @required this.post, this.doNotAllowProfileOpen = false})
+      : super(key: key);
   @override
   _PostItemState createState() => _PostItemState();
 }
@@ -70,7 +73,15 @@ class _PostItemState extends State<PostItem> {
             ),
           ],
         ),
-        onTap: () {},
+        onTap: () {
+          if (!widget.doNotAllowProfileOpen) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (coontext) =>
+                        UserWidget(userID: widget.post.userID)));
+          }
+        },
       ),
     );
   }
