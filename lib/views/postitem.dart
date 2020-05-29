@@ -6,14 +6,13 @@ class PostItem extends StatefulWidget {
   final String img;
   final String comment;
 
-
-  PostItem({
-    Key key,
-    @required this.dp,
-    @required this.name,
-    @required this.img,
-    @required this.comment
-  }) : super(key: key);
+  PostItem(
+      {Key key,
+      @required this.dp,
+      @required this.name,
+      @required this.img,
+      @required this.comment})
+      : super(key: key);
   @override
   _PostItemState createState() => _PostItemState();
 }
@@ -32,7 +31,6 @@ class _PostItemState extends State<PostItem> {
                   "${widget.dp}",
                 ),
               ),
-
               contentPadding: EdgeInsets.all(0),
               title: Text(
                 "${widget.name}",
@@ -40,26 +38,27 @@ class _PostItemState extends State<PostItem> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              
+              trailing: IconButton(
+                icon: Icon(Icons.thumb_up),
+                onPressed: () {},
+              ),
             ),
-
-            new Align(alignment: Alignment.centerLeft,child:Text('\"${widget.comment}\"', textAlign: TextAlign.left, style:TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontStyle: FontStyle.italic
-                  
-                ),),),
-
+            new Align(
+              alignment: Alignment.center,
+              child: Text(
+                '\"${widget.comment}\"',
+                style: TextStyle(
+                    fontWeight: FontWeight.w600, fontStyle: FontStyle.italic),
+              ),
+            ),
             Image.network(
               "${widget.img}",
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
             ),
-
-            
-
           ],
         ),
-        onTap: (){},
+        onTap: () {},
       ),
     );
   }
