@@ -21,7 +21,12 @@ class _HomeState extends State<Home> {
               "https://images.unsplash.com/photo-1590721014738-fb5187b4051a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
           "caption": "Look at my fish!",
           "PostID": 0,
-          "User": {"username": "ewpratten", "id": 0}
+          "User": {
+            "username": "ewpratten",
+            "id": 0,
+            "picture":
+                "https://pbs.twimg.com/profile_images/1168699652717383680/cybUv8zv_400x400.jpg"
+          }
         }));
 
     this.posts.add(new Post({
@@ -30,7 +35,12 @@ class _HomeState extends State<Home> {
           "caption":
               "I talk too much. Look at me talking. Words, words, words!!",
           "PostID": 1,
-          "User": {"username": "downunder", "id": 1}
+          "User": {
+            "username": "downunder",
+            "id": 1,
+            "picture":
+                "https://pbs.twimg.com/profile_images/1168699652717383680/cybUv8zv_400x400.jpg"
+          }
         }));
   }
 
@@ -59,32 +69,11 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    // // Add back and forward buttons
-    // cards.add(new Row(
-    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    //   children: <Widget>[
-    //     RaisedButton(
-    //       child: Text("More"),
-    //       onPressed: () {
-    //         this.pageNum++;
-    //         getFeedPage(this.updateFeed, this.pageNum);
-    //       },
-    //     )
-    //   ],
-    // ));
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Feeds"),
+        title: Text("Feed"),
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.filter_list,
-            ),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: RefreshIndicator(
         onRefresh: () {
@@ -97,15 +86,24 @@ class _HomeState extends State<Home> {
         },
         child: ListView.builder(
           padding: EdgeInsets.symmetric(horizontal: 20),
-          itemCount: posts.length,
+          itemCount: this.posts.length + 1,
           itemBuilder: (BuildContext context, int index) {
-            Post post = this.posts[index];
-            return PostItem(
-              img: post.pictureURL,
-              name: post.username,
-              dp: post.profilePicURL,
-              comment: post.caption
-            );
+            if (index < this.posts.length) {
+              Post post = this.posts[index];
+              return PostItem(
+                  img: post.pictureURL,
+                  name: post.username,
+                  dp: post.profilePicURL,
+                  comment: post.caption);
+            } else {
+              return RaisedButton(
+                child: Text("More"),
+                onPressed: () {
+                  this.pageNum++;
+                  getFeedPage(this.updateFeed, this.pageNum);
+                },
+              );
+            }
           },
         ),
       ),

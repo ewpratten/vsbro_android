@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vsbro/views/feedview.dart';
 import 'package:vsbro/views/home.dart';
 
 void main() {
