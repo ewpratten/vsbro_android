@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
     this.pageNum++;
 
     // TODO: Test post
-    addTestPosts();
+    // addTestPosts();
   }
 
   void updateFeed(List<dynamic> response) {
@@ -91,10 +91,7 @@ class _HomeState extends State<Home> {
             if (index < this.posts.length) {
               Post post = this.posts[index];
               return PostItem(
-                  img: post.pictureURL,
-                  name: post.username,
-                  dp: post.profilePicURL,
-                  comment: post.caption);
+                  post:post);
             } else {
               return RaisedButton(
                 child: Text("More"),

@@ -18,50 +18,9 @@ class Post {
     this.caption = json["caption"];
     this.username = json["User"]["username"];
     this.userID = json["User"]["id"];
-    this.profilePicURL = json["User"]["picture"];
-  }
-
-  Padding getCard(BuildContext context) {
-    return new Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Card(
-            child: Column(
-          children: <Widget>[
-            Center(
-                child: Text(
-              this.username,
-              style: TextStyle(fontSize: 40),
-            )),
-            Image.network(this.pictureURL),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Flexible(
-                  child: Text(
-                    this.caption,
-                    style: TextStyle(fontSize: 25),
-                  ),
-                ),
-                CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Color(0xff94d500),
-                    child: IconButton(
-                      icon: Icon(Icons.plus_one),
-                      onPressed: () {
-                        if (isUserAuthenticated()) {
-                          upvotePost(this.postID);
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => AuthView()),
-                          );
-                        }
-                      },
-                    ))
-              ],
-            )
-          ],
-        )));
+    this.profilePicURL =
+        "https://d8xay7agdbr1p.cloudfront.net/users/${userID}/" +
+            json["User"]["picture"];
   }
 
   void upvote() {}

@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:vsbro/api/auth.dart';
+import 'package:vsbro/model/post.dart';
+import 'package:vsbro/views/authview.dart';
 
 class PostItem extends StatefulWidget {
-  final String dp;
-  final String name;
-  final String img;
-  final String comment;
+  final Post post;
 
-  PostItem(
-      {Key key,
-      @required this.dp,
-      @required this.name,
-      @required this.img,
-      @required this.comment})
-      : super(key: key);
+  PostItem({Key key, @required this.post}) : super(key: key);
   @override
   _PostItemState createState() => _PostItemState();
 }
@@ -28,31 +22,38 @@ class _PostItemState extends State<PostItem> {
             ListTile(
               leading: CircleAvatar(
                 backgroundImage: NetworkImage(
-                  "${widget.dp}",
+                  "${widget.post.profilePicURL}",
                 ),
               ),
               contentPadding: EdgeInsets.all(0),
               title: Text(
-                "${widget.name}",
+                "${widget.post.username}",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               trailing: IconButton(
-                icon: Icon(Icons.thumb_up),
-                onPressed: () {},
-              ),
+                  icon: Icon(Icons.thumb_up),
+                  onPressed: () {
+                    // If we have auth, make an upvote call
+                    if (isUserAuthenticated()) {
+                      widget.post.upvote();
+                    } else {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (coontext) => AuthView()));
+                    }
+                  }),
             ),
             new Align(
               alignment: Alignment.center,
               child: Text(
-                '\"${widget.comment}\"',
+                '\"${widget.post.caption}\"',
                 style: TextStyle(
                     fontWeight: FontWeight.w600, fontStyle: FontStyle.italic),
               ),
             ),
             Image.network(
-              "${widget.img}",
+              "${widget.post.pictureURL}",
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
             ),
