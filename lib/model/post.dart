@@ -10,6 +10,7 @@ class Post {
   num userID;
   num postID;
   String caption;
+  String profilePicURL;
 
   Post(Map<String, dynamic> json) {
     this.pictureURL = json["Picture"];
@@ -17,6 +18,8 @@ class Post {
     this.caption = json["caption"];
     this.username = json["User"]["username"];
     this.userID = json["User"]["id"];
+    this.profilePicURL =
+        "https://pbs.twimg.com/profile_images/1168699652717383680/cybUv8zv_400x400.jpg";
   }
 
   Padding getCard(BuildContext context) {

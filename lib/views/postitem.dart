@@ -43,7 +43,6 @@ class _PostItemState extends State<PostItem> {
 
             Image.network(
               "${widget.img}",
-              height: 170,
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
             ),

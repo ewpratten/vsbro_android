@@ -15,9 +15,31 @@ class _HomeState extends State<Home> {
 
   List<Post> posts = new List();
 
+  void addTestPosts() {
+    this.posts.add(new Post({
+          "Picture":
+              "https://images.unsplash.com/photo-1590721014738-fb5187b4051a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+          "caption": "Look at my fish!",
+          "PostID": 0,
+          "User": {"username": "ewpratten", "id": 0}
+        }));
+
+    this.posts.add(new Post({
+          "Picture":
+              "https://images.unsplash.com/photo-1560936165-7a7b77325c2e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          "caption":
+              "I talk too much. Look at me talking. Words, words, words!!",
+          "PostID": 1,
+          "User": {"username": "downunder", "id": 1}
+        }));
+  }
+
   void loadNextPage() {
     getFeedPage(this.updateFeed, this.pageNum);
     this.pageNum++;
+
+    // TODO: Test post
+    addTestPosts();
   }
 
   void updateFeed(List<dynamic> response) {
@@ -37,7 +59,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
     // // Add back and forward buttons
     // cards.add(new Row(
     //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -65,7 +86,6 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-
       body: RefreshIndicator(
         onRefresh: () {
           getFeedPage(this.updateFeed, this.pageNum);
@@ -83,16 +103,11 @@ class _HomeState extends State<Home> {
             return PostItem(
               img: post.pictureURL,
               name: post.username,
-              dp: "https://pbs.twimg.com/profile_images/1168699652717383680/cybUv8zv_400x400.jpg",
+              dp: post.profilePicURL,
             );
           },
         ),
       ),
-      // body: PostItem(
-      //   img: "",
-      //   name: "ewpratten",
-      //   dp: "post['dp']",
-      // ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
           Icons.add,
