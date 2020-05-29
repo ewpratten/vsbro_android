@@ -1,0 +1,1 @@
+// typedef JSONVoidCallback = Funtion<Map>;
