@@ -3,3 +3,6 @@ var login_route = "https://api.vsbro.co/users/sign_in";
 
 // {email:"email", password:"password"}
 
+bool isUserAuthenticated() {
+  return false;
+}

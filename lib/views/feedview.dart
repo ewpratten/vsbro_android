@@ -35,11 +35,11 @@ class _FeedViewState extends State<FeedView> {
     });
   }
 
-  List<Widget> getContentCards() {
+  List<Widget> getContentCards(BuildContext context) {
     List<Widget> cards = new List();
 
     for (Post post in this.posts) {
-      cards.add(post.getCard());
+      cards.add(post.getCard(context));
     }
 
     return cards;
@@ -52,7 +52,7 @@ class _FeedViewState extends State<FeedView> {
   @override
   Widget build(BuildContext context) {
     // Make cards list
-    var cards = this.getContentCards();
+    var cards = this.getContentCards(context);
 
     // Add back and forward buttons
     cards.add(new Row(

@@ -1,9 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:vsbro/api/feed.dart';
 import 'package:vsbro/commondrawer.dart';
-import 'package:vsbro/model/post.dart';
 
 class AboutView extends StatefulWidget {
   AboutView({Key key}) : super(key: key);
