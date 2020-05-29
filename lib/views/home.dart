@@ -104,6 +104,7 @@ class _HomeState extends State<Home> {
               img: post.pictureURL,
               name: post.username,
               dp: post.profilePicURL,
+              comment: post.caption
             );
           },
         ),
